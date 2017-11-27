@@ -68,10 +68,8 @@ QImage GLBlurFunctions::blurImage(QImage imageToBlur, int radius, int blurType)
     m_Texture->setWrapMode(QOpenGLTexture::ClampToEdge);
     m_Texture->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Linear);
 
-    //Copy TO the buffer1 texture
+    //Set up to copy the image FROM the m_Texture texture (original image) TO the buffer1 texture
     m_FrameBufferObject1->bind();
-
-    //Copy FROM the m_Texture that has our original image
     m_Texture->bind();
 
     m_ShaderProgram->setUniformValue("blurType", blurType);
@@ -84,37 +82,35 @@ QImage GLBlurFunctions::blurImage(QImage imageToBlur, int radius, int blurType)
 
     while (radius > 0)
     {
-        //Blur horizontally ------------------------------------------------------------
+        //Blurring horizontally ------------------------------------------------------------
 
-        //Copy TO the buffer2 texture
+        m_ShaderProgram->setUniformValue("direction", QVector2D(radius, 0.0));      
+        
+        //Set up to copy the image FROM the buffer2 texture TO the buffer1 texture
+        //while blurring it horizontally
         m_FrameBufferObject2->bind();
+        QOpenGLFunctions::glBindTexture(GL_TEXTURE_2D, m_FrameBufferObject1->texture());        
 
-        //Copy FROM the buffer1 texture
-        QOpenGLFunctions::glBindTexture(GL_TEXTURE_2D, m_FrameBufferObject1->texture());
-
-        m_ShaderProgram->setUniformValue("direction", QVector2D(radius, 0.0));
-
-        //Do the actual rendering
+        //Do the rendering
         glClear(GL_COLOR_BUFFER_BIT);
         glDrawArrays(GL_TRIANGLE_FAN, 0, sizeof(sg_vertexes) / sizeof(sg_vertexes[0]));
 
 
-        //Blur vertically --------------------------------------------------------------
-
-        //Copy TO the buffer1 texture
-        m_FrameBufferObject1->bind();
-
-        //Copy FROM the buffer2 texture
-        QOpenGLFunctions::glBindTexture(GL_TEXTURE_2D, m_FrameBufferObject2->texture());
+        //Blurring vertically --------------------------------------------------------------
 
         m_ShaderProgram->setUniformValue("direction", QVector2D(0.0, radius));
+      
+        //Set up to copy the image FROM the buffer1 texture TO the buffer2 texture
+        //while blurring it vertically
+        m_FrameBufferObject1->bind();
+        QOpenGLFunctions::glBindTexture(GL_TEXTURE_2D, m_FrameBufferObject2->texture());
 
-        //Do the actual rendering
+        //Do the rendering
         glClear(GL_COLOR_BUFFER_BIT);
         glDrawArrays(GL_TRIANGLE_FAN, 0, sizeof(sg_vertexes) / sizeof(sg_vertexes[0]));
 
 
-        //Decrease our blur radius and start the blur again
+        //Decrease our blur radius and start the blurring again
         radius--;
     }
 
