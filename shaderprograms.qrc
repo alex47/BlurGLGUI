@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>shaders/simple.frag</file>
+        <file>shaders/simple.vert</file>
+        <file>qt/etc/qt.conf</file>
+        <file>img/lenna.png</file>
+    </qresource>
+</RCC>
