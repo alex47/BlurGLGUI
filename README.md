@@ -1,5 +1,5 @@
 # BlurGLGUI
-OpenGL implementation of bluring images
+OpenGL implementation of blurring images
 
 Download executable: https://github.com/alex47/BlurGLGUI/releases/latest
 
