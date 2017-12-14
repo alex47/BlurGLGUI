@@ -5,6 +5,8 @@
 #include <QFileDialog>
 #include <QImageReader>
 
+#include <QElapsedTimer>
+
 #include "glblurfunctions.h"
 
 namespace Ui {
@@ -34,6 +36,8 @@ private:
     GLBlurFunctions GLBluring;
     QImage originalImage;
     QImage shownImage;
+
+    QElapsedTimer timer;
 
     void resizeEvent(QResizeEvent *event);
     void updateWindowImages();

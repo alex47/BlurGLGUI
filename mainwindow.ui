@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>826</width>
-    <height>472</height>
+    <height>473</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>OpenGL - Gaussian Blur</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -103,6 +103,20 @@
         </property>
         <property name="tickInterval">
          <number>1</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelConstantElapsed">
+        <property name="text">
+         <string>  Render time: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelRenderTime">
+        <property name="text">
+         <string>0</string>
         </property>
        </widget>
       </item>

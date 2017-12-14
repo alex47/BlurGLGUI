@@ -23,7 +23,9 @@ MainWindow::~MainWindow()
 void MainWindow::on_sliderBlurRadius_sliderMoved(int position)
 {
     radius = position;
+    timer.start();
     ui->labelBlurredImage->setPixmap(QPixmap::fromImage(GLBluring.blurImage(shownImage, radius, blurType)));
+    ui->labelRenderTime->setText(QString::number(timer.nsecsElapsed() / 1000000.) + " ms");
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
@@ -50,7 +52,9 @@ void MainWindow::on_buttonOpenFile_clicked()
 void MainWindow::on_spinBoxBlurType_valueChanged(int arg1)
 {
     blurType = arg1;
+    timer.start();
     ui->labelBlurredImage->setPixmap(QPixmap::fromImage(GLBluring.blurImage(shownImage, radius, blurType)));
+    ui->labelRenderTime->setText(QString::number(timer.nsecsElapsed() / 1000000.) + " ms");
 }
 
 void MainWindow::updateWindowImages()
@@ -58,5 +62,7 @@ void MainWindow::updateWindowImages()
     shownImage = originalImage.scaled(ui->labelOriginalImage->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
     ui->labelOriginalImage->setPixmap(QPixmap::fromImage(shownImage));
+    timer.start();
     ui->labelBlurredImage->setPixmap(QPixmap::fromImage(GLBluring.blurImage(shownImage, radius, blurType)));
+    ui->labelRenderTime->setText(QString::number(timer.nsecsElapsed() / 1000000.) + " ms");
 }
